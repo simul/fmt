@@ -82,6 +82,7 @@ option(FMT_CUDA_TEST "Generate the cuda-test target." OFF)
 option(FMT_OS "Include core requiring OS (Windows/Posix) " ON)
 option(FMT_MODULE "Build a module instead of a traditional library." OFF)
 option(FMT_SYSTEM_HEADERS "Expose headers with marking them as system." OFF)
+option(FMT_COMPILER_FEATURE_CHECKS "Check the compiler supports the required features." ON)
 
 set(FMT_CAN_MODULE OFF)
 if (CMAKE_CXX_STANDARD GREATER 17 AND NOT MSVC)
@@ -231,7 +232,9 @@ if (FMT_MODULE)
   enable_module(fmt)
 endif ()
 
-target_compile_features(fmt PUBLIC cxx_std_11)
+if (FMT_COMPILER_FEATURE_CHECKS)
+  target_compile_features(fmt PUBLIC cxx_std_11)
+endif ()
 
 target_include_directories(fmt ${FMT_SYSTEM_HEADERS_ATTRIBUTE} PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
